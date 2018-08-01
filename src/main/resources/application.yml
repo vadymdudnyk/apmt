@@ -16,3 +16,21 @@ logging:
     org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl: ERROR
 
 
+---
+
+spring:
+  profiles: dev
+server:
+  port: 8080
+
+---
+
+spring:
+  profiles: prod
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://postgresql:5432/appointment_engine_db
+    username: postgres
+    password: postgres
+server:
+  port: 0
