@@ -20,6 +20,9 @@ public class User {
     @JsonIgnore
     private String password;
 
+    private String firstName;
+    private String lastName;
+
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
