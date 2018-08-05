@@ -2,11 +2,12 @@ package com.vdudnyk.appointmentengine.application.user;
 
 import com.vdudnyk.appointmentengine.application.shared.exception.ApiException;
 import com.vdudnyk.appointmentengine.application.user.shared.AddUserRequest;
+import com.vdudnyk.appointmentengine.application.user.shared.RegisterUserRequest;
 import com.vdudnyk.appointmentengine.application.user.shared.SignInRequest;
-import com.vdudnyk.appointmentengine.application.user.shared.SignUpRequest;
 import com.vdudnyk.appointmentengine.application.user.shared.TokenResponse;
 import com.vdudnyk.appointmentengine.infrastructure.config.JwtTokenProvider;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class UserService {
@@ -41,20 +43,21 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    User signUpAsBusinessOwner(SignUpRequest signUpRequest) {
-        Optional<User> optionalUser = userRepository.findByUsername(signUpRequest.getUsername());
+    User signUpAsBusinessOwner(RegisterUserRequest registerUserRequest) {
+        Optional<User> optionalUser = userRepository.findByUsername(registerUserRequest.getUsername());
         if (optionalUser.isPresent()) {
             throw new ApiException("Username already taken");
         }
 
         User user = new User();
-        user.setUsername(signUpRequest.getUsername());
-        user.setFirstName(signUpRequest.getFirstName());
-        user.setLastName(signUpRequest.getLastName());
-        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+        user.setUsername(registerUserRequest.getUsername());
+        user.setFirstName(registerUserRequest.getFirstName());
+        user.setLastName(registerUserRequest.getLastName());
+        user.setPassword(passwordEncoder.encode(registerUserRequest.getPassword()));
         user.setRoles(asSet(roleRepository.getRoleByName("ROLE_OWNER")));
-
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        log.info("Saved user: {}", savedUser.getUsername());
+        return savedUser;
     }
 
     TokenResponse authenticateUser(SignInRequest signInRequest) {

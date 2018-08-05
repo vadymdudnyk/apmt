@@ -1,8 +1,8 @@
 package com.vdudnyk.appointmentengine.application.user;
 
 import com.vdudnyk.appointmentengine.application.user.shared.AddUserRequest;
+import com.vdudnyk.appointmentengine.application.user.shared.RegisterUserRequest;
 import com.vdudnyk.appointmentengine.application.user.shared.SignInRequest;
-import com.vdudnyk.appointmentengine.application.user.shared.SignUpRequest;
 import com.vdudnyk.appointmentengine.application.user.shared.TokenResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,8 @@ public class UserFacade {
         return userService.addUser(addUserRequest);
     }
 
-    public User signUpAsBusinessOwner(SignUpRequest signUpRequest) {
-        return userService.signUpAsBusinessOwner(signUpRequest);
+    public User registerUser(RegisterUserRequest registerUserRequest) {
+        return userService.signUpAsBusinessOwner(registerUserRequest);
     }
 
     public TokenResponse authenticateUser(SignInRequest signInRequest) {

@@ -3,8 +3,8 @@ package com.vdudnyk.appointmentengine.infrastructure.controller;
 import com.vdudnyk.appointmentengine.application.user.User;
 import com.vdudnyk.appointmentengine.application.user.UserFacade;
 import com.vdudnyk.appointmentengine.application.user.shared.AddUserRequest;
+import com.vdudnyk.appointmentengine.application.user.shared.RegisterUserRequest;
 import com.vdudnyk.appointmentengine.application.user.shared.SignInRequest;
-import com.vdudnyk.appointmentengine.application.user.shared.SignUpRequest;
 import com.vdudnyk.appointmentengine.application.user.shared.TokenResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,8 +40,8 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signUpAsBusinessOwner(@RequestBody SignUpRequest signUpRequest) {
-        User user = userFacade.signUpAsBusinessOwner(signUpRequest);
+    public ResponseEntity<User> signUpAsBusinessOwner(@RequestBody RegisterUserRequest registerUserRequest) {
+        User user = userFacade.registerUser(registerUserRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/users/{id}")
                 .buildAndExpand(user.getId()).toUri();
