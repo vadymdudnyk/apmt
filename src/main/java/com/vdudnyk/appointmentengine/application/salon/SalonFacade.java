@@ -11,10 +11,6 @@ import org.springframework.stereotype.Service;
 public class SalonFacade {
     private final SalonService salonService;
 
-    public SalonResponse createSalonForAuthenticatedUser(CreateSalonRequest createSalonRequest) {
-        return salonService.createSalonForAuthenticatedUser(createSalonRequest);
-    }
-
     public SalonResponse createSalonForUser(CreateSalonRequest createSalonRequest, User user) {
         return salonService.createSalonForUser(createSalonRequest, user);
     }
@@ -27,10 +23,6 @@ public class SalonFacade {
         return salonService.getUserSalon();
     }
 
-    public SalonResponse addWorkerToSalon(AddWorkerToSalonRequest addWorkerToSalonRequest) {
-        return salonService.addWorkerToSalon(addWorkerToSalonRequest);
-    }
-
     public StatusResponse deleteServiceType(Long id) {
         return salonService.deleteServiceType(id);
     }
@@ -38,4 +30,9 @@ public class SalonFacade {
     public StatusResponse updateServiceType(UpdateServiceTypeRequest updateServiceTypeRequest) {
         return salonService.updateServiceType(updateServiceTypeRequest);
     }
+
+    public SalonResponse addWorkerToSalon(AddWorkerToSalonRequest addWorkerToSalonRequest) {
+        return salonService.addWorkerToSalon(addWorkerToSalonRequest);
+    }
+
 }
