@@ -26,4 +26,12 @@ public class AppointmentFacade {
     public List<AppointmentsByDayDTO> getAllAppointmentsGroupedByDay() {
         return appointmentsViewsService.getAllAppointmentsGroupedByDay();
     }
+
+    public List<AppointmentsByDayDTO> getAllAppointmentsGroupedByDayWholeMonth(String month) {
+        return appointmentsViewsService.getAllAppointmentsGroupedByDayWholeMonth(month);
+    }
+
+    public List<AppointmentsByDayDTO> getAllAppointmentsGroupedByDayCurrentAndNextWeek(String currentDate, Long offset) {
+        return appointmentsViewsService.getAllAppointmentsGroupedByDayCurrentAndNextWeek(currentDate, offset);
+    }
 }

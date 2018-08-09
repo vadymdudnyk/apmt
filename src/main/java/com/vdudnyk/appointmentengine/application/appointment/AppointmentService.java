@@ -12,6 +12,7 @@ import com.vdudnyk.appointmentengine.application.shared.StatusResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +56,18 @@ class AppointmentService {
         SalonResponse userSalon = salonFacade.getUserSalon();
         return appointmentRepository
                 .findAllBySalonId(userSalon.getId())
+                .stream()
+                .map(this::mapAppointmentToAppointmentDTO)
+                .collect(Collectors.toList());
+    }
+
+    List<AppointmentDTO> getAllAppointments(LocalDate localDateFrom, LocalDate localDateTo) {
+        SalonResponse userSalon = salonFacade.getUserSalon();
+
+        return appointmentRepository
+                .findAllBySalonIdAndDateTimeFromBetween(userSalon.getId(),
+                                                        localDateFrom.atStartOfDay(),
+                                                        localDateTo.atTime(23, 59, 59))
                 .stream()
                 .map(this::mapAppointmentToAppointmentDTO)
                 .collect(Collectors.toList());

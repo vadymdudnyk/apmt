@@ -27,6 +27,16 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentFacade.getAllAppointmentsGroupedByDay());
     }
 
+    @GetMapping("/grouped/{currentDate}")
+    public ResponseEntity<List<AppointmentsByDayDTO>> getAllAppointmentsGroupedByDayWholeMonth(@PathVariable String currentDate) {
+        return ResponseEntity.ok(appointmentFacade.getAllAppointmentsGroupedByDayWholeMonth(currentDate));
+    }
+
+    @GetMapping("/grouped/{currentDate}/{weeksOffset}")
+    public ResponseEntity<List<AppointmentsByDayDTO>> getAllAppointmentsGroupedByDayCurrentAndNextWeek(@PathVariable String currentDate,
+                                                                                                       @PathVariable Long weeksOffset) {
+        return ResponseEntity.ok(appointmentFacade.getAllAppointmentsGroupedByDayCurrentAndNextWeek(currentDate, weeksOffset));
+    }
     @PostMapping
     public ResponseEntity<StatusResponse> createAppointment(@RequestBody CreateAppointmentRequest createAppointmentRequest) {
         return ResponseEntity.ok(appointmentFacade.createAppointment(createAppointmentRequest));
