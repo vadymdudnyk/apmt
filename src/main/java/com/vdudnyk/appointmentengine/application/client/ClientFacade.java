@@ -4,6 +4,8 @@ import com.vdudnyk.appointmentengine.application.client.shared.CreateOrGetClient
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ClientFacade {
@@ -13,6 +15,9 @@ public class ClientFacade {
         return clientService.createClient(createClientRequest);
     }
 
+    public List<Client> getAllSalonClients() {
+        return clientService.getAllSalonClients();
+    }
     public void updateClient() {
 
     }

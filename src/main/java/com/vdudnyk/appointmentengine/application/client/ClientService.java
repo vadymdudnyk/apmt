@@ -6,6 +6,7 @@ import com.vdudnyk.appointmentengine.application.salon.shared.SalonResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,5 +44,9 @@ class ClientService {
 
     void getClient(Long clientId) {
 
+    }
+
+    public List<Client> getAllSalonClients() {
+        return clientRepository.findAll();
     }
 }

@@ -1,5 +1,7 @@
 package com.vdudnyk.appointmentengine.infrastructure.controller;
 
+import com.vdudnyk.appointmentengine.application.client.Client;
+import com.vdudnyk.appointmentengine.application.client.ClientFacade;
 import com.vdudnyk.appointmentengine.application.salon.SalonFacade;
 import com.vdudnyk.appointmentengine.application.salon.shared.AddServiceTypeRequest;
 import com.vdudnyk.appointmentengine.application.salon.shared.AddWorkerToSalonRequest;
@@ -10,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.vdudnyk.appointmentengine.infrastructure.controller.SalonController.RESOURCE;
 
 @RestController
@@ -19,6 +23,7 @@ public class SalonController {
     static final String RESOURCE = "salon";
 
     private final SalonFacade salonFacade;
+    private final ClientFacade clientFacade;
 
     @PostMapping("/services")
     public ResponseEntity<SalonResponse> addServiceType(@RequestBody AddServiceTypeRequest addServiceTypeRequest) {
@@ -36,6 +41,12 @@ public class SalonController {
     public ResponseEntity<StatusResponse> updateServiceType(@RequestBody UpdateServiceTypeRequest updateServiceTypeRequest) {
         StatusResponse statusResponse = salonFacade.updateServiceType(updateServiceTypeRequest);
         return ResponseEntity.ok(statusResponse);
+    }
+
+    @GetMapping("/clients")
+    public ResponseEntity<List<Client>> getAllClients() {
+        List<Client> allSalonClients = clientFacade.getAllSalonClients();
+        return ResponseEntity.ok(allSalonClients);
     }
 
 
