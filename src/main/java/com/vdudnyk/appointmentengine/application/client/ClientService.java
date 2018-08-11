@@ -46,7 +46,8 @@ class ClientService {
 
     }
 
-    public List<Client> getAllSalonClients() {
-        return clientRepository.findAll();
+    List<Client> getAllSalonClients() {
+        SalonResponse userSalon = salonFacade.getUserSalon();
+        return clientRepository.findAllBySalonId(userSalon.getId());
     }
 }
