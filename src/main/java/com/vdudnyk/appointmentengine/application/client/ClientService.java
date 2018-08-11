@@ -3,6 +3,7 @@ package com.vdudnyk.appointmentengine.application.client;
 import com.vdudnyk.appointmentengine.application.client.shared.CreateOrGetClientRequest;
 import com.vdudnyk.appointmentengine.application.salon.SalonFacade;
 import com.vdudnyk.appointmentengine.application.salon.shared.SalonResponse;
+import com.vdudnyk.appointmentengine.application.shared.exception.ApiException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,10 @@ class ClientService {
     private final SalonFacade salonFacade;
 
     Client createClient(CreateOrGetClientRequest createClientRequest) {
+        if (createClientRequest.getFirstName() == null) {
+            throw new ApiException("FirstName cannot be null");
+        }
+
         SalonResponse userSalon = salonFacade.getUserSalon();
         if (createClientRequest.getId() != null) {
             Optional<Client> possibleClient = clientRepository.findByIdAndSalonId(createClientRequest.getId(), userSalon.getId());
