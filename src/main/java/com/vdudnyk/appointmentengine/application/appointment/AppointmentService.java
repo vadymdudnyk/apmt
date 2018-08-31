@@ -2,9 +2,7 @@ package com.vdudnyk.appointmentengine.application.appointment;
 
 import com.vdudnyk.appointmentengine.application.appointment.shared.AppointmentDTO;
 import com.vdudnyk.appointmentengine.application.appointment.shared.CreateAppointmentRequest;
-import com.vdudnyk.appointmentengine.application.client.Client;
-import com.vdudnyk.appointmentengine.application.client.ClientFacade;
-import com.vdudnyk.appointmentengine.application.client.shared.CreateOrGetClientRequest;
+import com.vdudnyk.appointmentengine.application.appointment.shared.UpdateAppointmentRequest;
 import com.vdudnyk.appointmentengine.application.salon.SalonFacade;
 import com.vdudnyk.appointmentengine.application.salon.shared.SalonResponse;
 import com.vdudnyk.appointmentengine.application.shared.Status;
@@ -14,35 +12,26 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 class AppointmentService {
     private final SalonFacade salonFacade;
-    private final ClientFacade clientFacade;
     private final AppointmentRepository appointmentRepository;
 
     StatusResponse createAppointment(CreateAppointmentRequest createAppointmentRequest) {
         SalonResponse userSalon = salonFacade.getUserSalon();
-        CreateAppointmentRequest.Client client = createAppointmentRequest.getClient();
-        Client dbClient = clientFacade
-                .createOrGetClient(new CreateOrGetClientRequest(client.getId(),
-                                                                client.getFirstName(),
-                                                                client.getLastName(),
-                                                                client.getPhoneNumber(),
-                                                                client.getSocialMediaLink()));
-
         Appointment appointment = new Appointment();
+        appointment.setName(createAppointmentRequest.getName());
         appointment.setSalonId(userSalon.getId());
-        appointment.setClient(dbClient);
         appointment.setDateTimeFrom(createAppointmentRequest.getDateTimeFrom());
         appointment.setDateTimeTo(createAppointmentRequest.getDateTimeTo());
         appointment.setServiceType(userSalon.getServices()
                                             .stream()
                                             .filter(serviceType -> createAppointmentRequest.getServiceTypes().contains(serviceType.getId()))
                                             .collect(Collectors.toList()));
-
         appointmentRepository.save(appointment);
         return new StatusResponse(Status.SUCCESS);
     }
@@ -73,8 +62,26 @@ class AppointmentService {
                 .collect(Collectors.toList());
     }
 
+    StatusResponse updateAppointment(UpdateAppointmentRequest updateAppointmentRequest) {
+        SalonResponse userSalon = salonFacade.getUserSalon();
+
+        Optional<Appointment> appointmentOptional = appointmentRepository
+                .findByIdAndSalonId(updateAppointmentRequest.getId(), userSalon.getId());
+        appointmentOptional.ifPresent(appointment -> {
+            appointment.setDateTimeTo(updateAppointmentRequest.getDateTimeTo());
+            appointment.setDateTimeFrom(updateAppointmentRequest.getDateTimeFrom());
+            appointment.setServiceType(userSalon.getServices()
+                                                .stream()
+                                                .filter(serviceType -> updateAppointmentRequest.getServiceType().contains(serviceType.getId()))
+                                                .collect(Collectors.toList()));
+            appointmentRepository.save(appointment);
+        });
+        return new StatusResponse(Status.SUCCESS);
+    }
+
     private AppointmentDTO mapAppointmentToAppointmentDTO(Appointment appointment) {
         return new AppointmentDTO(appointment.getId(),
+                                  appointment.getName(),
                                   appointment.getSalonId(),
                                   appointment.getClient(),
                                   appointment.getServiceType(),

@@ -11,20 +11,15 @@ import java.util.List;
 @Entity
 @Data
 class Appointment {
-
     @Id
     @GeneratedValue
     private Long id;
-
+    private String name;
     private Long salonId;
-
     @ManyToOne
     private Client client;
-
     @ManyToMany
     private List<ServiceType> serviceType;
-
     private LocalDateTime dateTimeFrom;
     private LocalDateTime dateTimeTo;
-
 }

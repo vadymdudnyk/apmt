@@ -6,9 +6,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class CreateAppointmentRequest {
+public class UpdateAppointmentRequest {
+    private Long id;
     private String name;
-    private List<Long> serviceTypes;
+    private List<Long> serviceType;
     private LocalDateTime dateTimeFrom;
     private LocalDateTime dateTimeTo;
 }

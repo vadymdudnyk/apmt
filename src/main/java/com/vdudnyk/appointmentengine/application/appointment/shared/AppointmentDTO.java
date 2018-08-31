@@ -10,12 +10,10 @@ import java.util.List;
 @Value
 public class AppointmentDTO {
     private Long id;
-
+    private String name;
     private Long salonId;
     private Client client;
-
     private List<ServiceType> serviceType;
-
     private LocalDateTime dateTimeFrom;
     private LocalDateTime dateTimeTo;
 }
