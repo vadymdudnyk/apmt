@@ -1,6 +1,6 @@
 package com.vdudnyk.appointmentengine.application.client;
 
-import com.vdudnyk.appointmentengine.application.client.shared.CreateOrGetClientRequest;
+import com.vdudnyk.appointmentengine.application.client.shared.AddClientRequest;
 import com.vdudnyk.appointmentengine.application.salon.SalonFacade;
 import com.vdudnyk.appointmentengine.application.salon.shared.SalonResponse;
 import com.vdudnyk.appointmentengine.application.shared.exception.ApiException;
@@ -16,7 +16,7 @@ class ClientService {
     private final ClientRepository clientRepository;
     private final SalonFacade salonFacade;
 
-    Client createClient(CreateOrGetClientRequest createClientRequest) {
+    Client createClient(AddClientRequest createClientRequest) {
         if (createClientRequest.getFirstName() == null) {
             throw new ApiException("FirstName cannot be null");
         }
@@ -33,7 +33,7 @@ class ClientService {
         client.setFirstName(createClientRequest.getFirstName());
         client.setLastName(createClientRequest.getLastName());
         client.setPhoneNumber(createClientRequest.getPhoneNumber());
-        client.setSocialMediaLink(createClientRequest.getSocialMediaLink());
+        client.setSocialMediaLink(createClientRequest.getSocialLink());
         client.setSalonId(userSalon.getId());
 
         return clientRepository.save(client);
@@ -47,8 +47,9 @@ class ClientService {
 
     }
 
-    void getClient(Long clientId) {
-
+    Client getClient(Long clientId) {
+        SalonResponse userSalon = salonFacade.getUserSalon();
+        return clientRepository.findByIdAndSalonId(clientId, userSalon.getId()).orElseThrow(() -> new ApiException("Client not found"));
     }
 
     List<Client> getAllSalonClients() {

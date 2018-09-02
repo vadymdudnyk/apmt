@@ -11,4 +11,5 @@ public class CreateAppointmentRequest {
     private List<Long> serviceTypes;
     private LocalDateTime dateTimeFrom;
     private LocalDateTime dateTimeTo;
+    private Long clientId;
 }

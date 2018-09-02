@@ -1,6 +1,6 @@
 package com.vdudnyk.appointmentengine.application.client;
 
-import com.vdudnyk.appointmentengine.application.client.shared.CreateOrGetClientRequest;
+import com.vdudnyk.appointmentengine.application.client.shared.AddClientRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +11,14 @@ import java.util.List;
 public class ClientFacade {
     private final ClientService clientService;
 
-    public Client createOrGetClient(CreateOrGetClientRequest createClientRequest) {
+    public Client addClient(AddClientRequest createClientRequest) {
         return clientService.createClient(createClientRequest);
     }
 
     public List<Client> getAllSalonClients() {
         return clientService.getAllSalonClients();
     }
+
     public void updateClient() {
 
     }
@@ -26,7 +27,7 @@ public class ClientFacade {
 
     }
 
-    public void getClient(Long clientId) {
-
+    public Client getClient(Long clientId) {
+        return clientService.getClient(clientId);
     }
 }

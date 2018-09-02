@@ -3,6 +3,7 @@ package com.vdudnyk.appointmentengine.application.appointment;
 import com.vdudnyk.appointmentengine.application.appointment.shared.AppointmentDTO;
 import com.vdudnyk.appointmentengine.application.appointment.shared.CreateAppointmentRequest;
 import com.vdudnyk.appointmentengine.application.appointment.shared.UpdateAppointmentRequest;
+import com.vdudnyk.appointmentengine.application.client.ClientFacade;
 import com.vdudnyk.appointmentengine.application.salon.SalonFacade;
 import com.vdudnyk.appointmentengine.application.salon.shared.SalonResponse;
 import com.vdudnyk.appointmentengine.application.shared.Status;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 class AppointmentService {
     private final SalonFacade salonFacade;
+    private final ClientFacade clientFacade;
     private final AppointmentRepository appointmentRepository;
 
     StatusResponse createAppointment(CreateAppointmentRequest createAppointmentRequest) {
@@ -32,6 +34,10 @@ class AppointmentService {
                                             .stream()
                                             .filter(serviceType -> createAppointmentRequest.getServiceTypes().contains(serviceType.getId()))
                                             .collect(Collectors.toList()));
+        appointment.setClient(
+                createAppointmentRequest.getClientId() != null ?
+                clientFacade.getClient(createAppointmentRequest.getClientId()) :
+                null);
         appointmentRepository.save(appointment);
         return new StatusResponse(Status.SUCCESS);
     }

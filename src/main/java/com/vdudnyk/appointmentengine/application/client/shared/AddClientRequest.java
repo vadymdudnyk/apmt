@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateOrGetClientRequest {
+public class AddClientRequest {
     private Long id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String socialMediaLink;
+    private String socialLink;
 }
